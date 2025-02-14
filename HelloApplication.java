@@ -30,14 +30,12 @@ public class HelloApplication extends Application {
         TextField fieldTotalPayment = new TextField();
         fieldTotalPayment.setEditable(false);
 
-        // Creating layout
         GridPane gridPane = new GridPane();
         gridPane.setPadding(new Insets(15, 15, 15, 15));
         gridPane.setVgap(10);
         gridPane.setHgap(10);
         gridPane.setAlignment(Pos.CENTER);
 
-        // Adding components to the layout
         gridPane.add(labelLoanAmount, 0, 0);
         gridPane.add(fieldLoanAmount, 1, 0);
         gridPane.add(labelAnnualInterestRate, 0, 1);
