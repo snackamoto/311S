@@ -1,0 +1,58 @@
+/* Basic Styling */
+.root {
+    -fx-font-family: "Arial";
+    -fx-background-color: #006456; /*farmingdale green*/
+}
+
+.label {
+    -fx-font-size: 20px;
+    -fx-text-fill: white;
+}
+
+.button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-transition: background-color 1s;
+}
+
+.button:hover {
+    -fx-background-color: #004b3d;
+}
+
+.vbox {
+    -fx-alignment: center;
+    -fx-spacing: 20px;
+}
+
+
+slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.button {
+    animation: slideUp 2s ease-out;
+}
+
+
+bgColorChange {
+    0% {
+        background-color: white;
+    100% {
+        background-color: #4CAF50;
+    }
+}
+
+.root {
+    animation: bgColorChange 2s infinite;
+}

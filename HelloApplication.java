@@ -1,77 +1,93 @@
-package com.example.hw2311;
+package org.example.lab311w4;
 
 import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.animation.PauseTransition;
+import javafx.util.Duration;
 
 public class HelloApplication extends Application {
-    @Override
+    private Stage primaryStage;
+
     public void start(Stage primaryStage) {
-        Label labelLoanAmount = new Label("Loan $ : ");
-        TextField fieldLoanAmount = new TextField();
+        this.primaryStage = primaryStage;
+        showSplashScreen();
+    }
 
-        Label labelAnnualInterestRate = new Label("Interest % : ");
-        TextField fieldAnnualInterestRate = new TextField();
-
-        Label labelNumberOfYears = new Label("Years : ");
-        TextField fieldNumberOfYears = new TextField();
-
-        Button btnCompute = new Button("Payment");
-
-        Label labelMonthlyPayment = new Label("Monthly payment : ");
-        TextField fieldMonthlyPayment = new TextField();
-        fieldMonthlyPayment.setEditable(false);
-
-        Label labelTotalPayment = new Label("Total payment : ");
-        TextField fieldTotalPayment = new TextField();
-        fieldTotalPayment.setEditable(false);
-
-        GridPane gridPane = new GridPane();
-        gridPane.setPadding(new Insets(15, 15, 15, 15));
-        gridPane.setVgap(10);
-        gridPane.setHgap(10);
-        gridPane.setAlignment(Pos.CENTER);
-
-        gridPane.add(labelLoanAmount, 0, 0);
-        gridPane.add(fieldLoanAmount, 1, 0);
-        gridPane.add(labelAnnualInterestRate, 0, 1);
-        gridPane.add(fieldAnnualInterestRate, 1, 1);
-        gridPane.add(labelNumberOfYears, 0, 2);
-        gridPane.add(fieldNumberOfYears, 1, 2);
-        gridPane.add(btnCompute, 1, 3);
-        gridPane.add(labelMonthlyPayment, 0, 4);
-        gridPane.add(fieldMonthlyPayment, 1, 4);
-        gridPane.add(labelTotalPayment, 0, 5);
-        gridPane.add(fieldTotalPayment, 1, 5);
-
-        btnCompute.setOnAction(e -> {
-            try {
-                double loanAmount = Double.parseDouble(fieldLoanAmount.getText());
-                double annualInterestRate = Double.parseDouble(fieldAnnualInterestRate.getText());
-                int numberOfYears = Integer.parseInt(fieldNumberOfYears.getText());
-
-                double monthlyInterestRate = annualInterestRate / 1200;
-                int numberOfMonths = numberOfYears * 12;
-                double monthlyPayment = (loanAmount * monthlyInterestRate) /
-                        (1 - (1 / Math.pow(1 + monthlyInterestRate, numberOfMonths)));
-                double totalPayment = monthlyPayment * numberOfMonths;
-
-                fieldMonthlyPayment.setText(String.format("%.2f", monthlyPayment));
-                fieldTotalPayment.setText(String.format("%.2f", totalPayment));
-            } catch (NumberFormatException ex) {
-                fieldMonthlyPayment.setText("Invalid");
-                fieldTotalPayment.setText("Invalid");
-            }
-        });
-
-        Scene scene = new Scene(gridPane, 500, 500);
-        primaryStage.setTitle("Loan Interest Calculator");
-        primaryStage.setScene(scene);
+    private void showSplashScreen() {
+        Label splashLabel = new Label("FSC Homepage");
+        StackPane splashLayout = new StackPane(splashLabel);
+        Scene splashScene = new Scene(splashLayout, 1000, 1000);
+        splashScene.getStylesheets().add(getClass().getResource("animation.css").toExternalForm()); // css
+        primaryStage.setScene(splashScene);
         primaryStage.show();
+
+        PauseTransition delay = new PauseTransition(Duration.seconds(2));
+        delay.setOnFinished(event -> showLoginScreen()); // Lambda over innerclasses
+        delay.play();
+    }
+
+    private void showLoginScreen() {
+        Label loginLabel = new Label("Login to Farmingdale");
+        Button loginButton = new Button("Login to your Account");
+        loginButton.getStyleClass().add("button");
+        loginButton.setOnAction(e -> showUsernamePasswordPage());
+
+        Button registerButton = new Button("Register New Account");
+        registerButton.getStyleClass().add("button");
+        registerButton.setOnAction(e -> showRegistrationScreen());
+
+        VBox loginLayout = new VBox(10, loginLabel, loginButton, registerButton);
+        loginLayout.getStyleClass().add("vbox");
+        Scene loginScene = new Scene(loginLayout, 1000, 1000);
+        loginScene.getStylesheets().add(getClass().getResource("animation.css").toExternalForm()); // css file
+        primaryStage.setScene(loginScene);
+    }
+
+    private void showUsernamePasswordPage() {
+        Label usernameLabel = new Label("Username: ");
+        TextField usernameField = new TextField();
+
+        Label passwordLabel = new Label("Password: ");
+        PasswordField passwordField = new PasswordField();
+
+        Button submitButton = new Button("Submit");
+        submitButton.getStyleClass().add("button");
+        submitButton.setOnAction(e -> showLandingScreen());
+
+        VBox usernamePasswordLayout = new VBox(50, usernameLabel, usernameField, passwordLabel, passwordField, submitButton);
+        usernamePasswordLayout.getStyleClass().add("vbox");
+        Scene usernamePasswordScene = new Scene(usernamePasswordLayout, 1000, 1000);
+        usernamePasswordScene.getStylesheets().add(getClass().getResource("animation.css").toExternalForm());
+        primaryStage.setScene(usernamePasswordScene);
+    }
+
+    private void showRegistrationScreen() {
+        Label registerLabel = new Label("Register");
+        Button registerButton = new Button("Enter");
+        registerButton.getStyleClass().add("button"); // Apply button styles
+        registerButton.setOnAction(e -> showLandingScreen()); // Lambda expression for event handler
+
+        VBox registerLayout = new VBox(100, registerLabel, registerButton);
+        registerLayout.getStyleClass().add("vbox"); // Apply VBox style
+        Scene registerScene = new Scene(registerLayout, 1000, 1000);
+        registerScene.getStylesheets().add(getClass().getResource("animation.css").toExternalForm());
+        primaryStage.setScene(registerScene);
+    }
+
+    private void showLandingScreen() {
+        Label landingLabel = new Label("Welcome to Brightspace");
+        VBox landingLayout = new VBox(100, landingLabel);
+        landingLayout.getStyleClass().add("vbox");
+        Scene landingScene = new Scene(landingLayout, 1000, 1000);
+        landingScene.getStylesheets().add(getClass().getResource("animation.css").toExternalForm());
+        primaryStage.setScene(landingScene);
     }
 
     public static void main(String[] args) {
